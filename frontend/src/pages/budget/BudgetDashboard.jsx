@@ -126,7 +126,7 @@ export default function BudgetDashboard() {
                   <label className="text-sm font-semibold text-gray-700">{cat.label}</label>
                 </div>
                 <div className="relative w-36">
-                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">₹</span>
                   <input type="number" min="0" className="input-field pl-7 text-right"
                     value={form[cat.key]}
                     onChange={e => setForm({ ...form, [cat.key]: parseFloat(e.target.value) || 0 })} />
@@ -167,7 +167,7 @@ export default function BudgetDashboard() {
             <BarChart data={barData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-              <YAxis tickFormatter={(v) => `$${v}`} tick={{ fontSize: 12 }} />
+              <YAxis tickFormatter={(v) => `₹${v}`} tick={{ fontSize: 12 }} />
               <Tooltip formatter={(v) => formatCurrency(v)} />
               <Bar dataKey="budget" fill="#6366f1" radius={[6, 6, 0, 0]} />
             </BarChart>

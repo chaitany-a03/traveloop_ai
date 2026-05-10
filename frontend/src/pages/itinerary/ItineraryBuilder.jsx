@@ -25,8 +25,8 @@ function ActivityForm({ onAdd, onCancel }) {
         </select>
         <input className="input-field text-sm" placeholder="Time (e.g. 9:00 AM)" value={form.time}
           onChange={e => setForm({ ...form, time: e.target.value })} />
-        <input className="input-field text-sm" type="number" placeholder="Cost ($)" value={form.cost}
-          onChange={e => setForm({ ...form, cost: e.target.value })} />
+        <input className="input-field text-sm" type="number" placeholder="Cost (₹)" value={form.cost}
+          onChange={e => setForm({ ...form, cost: parseFloat(e.target.value) || '' })} />
         <input className="input-field text-sm" placeholder="Duration (e.g. 2 hrs)" value={form.duration}
           onChange={e => setForm({ ...form, duration: e.target.value })} />
         <div className="col-span-2">
