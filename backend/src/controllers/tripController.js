@@ -30,14 +30,105 @@ const getTrip = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+const sequelize = require('../config/database');
+
+// Helper to map category to valid enum
+function mapActivityCategory(types = []) {
+  const ts = types.join(' ').toLowerCase();
+  if (ts.includes('night_club') || ts.includes('bar') || ts.includes('casino')) return 'nightlife';
+  if (ts.includes('museum') || ts.includes('art_gallery') || ts.includes('church') || ts.includes('hindu_temple')) return 'culture';
+  if (ts.includes('restaurant') || ts.includes('cafe') || ts.includes('bakery') || ts.includes('food') || ts.includes('meal_break')) return 'food';
+  if (ts.includes('park') || ts.includes('natural_feature')) return 'sightseeing';
+  if (ts.includes('amusement_park') || ts.includes('zoo') || ts.includes('aquarium')) return 'adventure';
+  if (ts.includes('shopping')) return 'shopping';
+  if (ts.includes('spa')) return 'relaxation';
+  return 'sightseeing';
+}
+
 const createTrip = async (req, res, next) => {
+  const transaction = await sequelize.transaction();
   try {
-    const { title, description, start_date, end_date, status } = req.body;
-    if (!title) return res.status(400).json({ success: false, message: 'Title is required' });
+    const { title, description, start_date, end_date, status, aiItinerary } = req.body;
+    if (!title) {
+      await transaction.rollback();
+      return res.status(400).json({ success: false, message: 'Title is required' });
+    }
+    
     const cover_image = req.file ? `/uploads/${req.file.filename}` : null;
-    const trip = await Trip.create({ user_id: req.user.id, title, description, start_date, end_date, cover_image, status });
+    
+    const trip = await Trip.create(
+      { user_id: req.user.id, title, description, start_date, end_date, cover_image, status },
+      { transaction }
+    );
+
+    if (aiItinerary) {
+      let parsed;
+      try {
+        parsed = typeof aiItinerary === 'string' ? JSON.parse(aiItinerary) : aiItinerary;
+      } catch (e) {
+        // Safe fail
+      }
+      
+      if (parsed && parsed.itinerary) {
+        // 1. Create Stops
+        for (const day of parsed.itinerary) {
+          const stop = await Stop.create({
+            trip_id: trip.id,
+            city: parsed.summary?.destination || 'Unknown',
+            country: 'Unknown',
+            order_index: day.day,
+            notes: day.theme || '',
+          }, { transaction });
+
+          // 2. Create Activities
+          if (day.activities && day.activities.length > 0) {
+            const activitiesToCreate = day.activities.map((act) => ({
+              stop_id: stop.id,
+              activity_name: act.name,
+              category: mapActivityCategory(act.types),
+              cost: act.estimatedCost || 0,
+              time: act.time || null,
+              notes: JSON.stringify({ rating: act.rating, isEnrichment: act.isEnrichment || false, address: act.address }),
+            }));
+            await Activity.bulkCreate(activitiesToCreate, { transaction });
+          }
+        }
+
+        // 3. Create Budget
+        if (parsed.summary) {
+          const totalBudget = parsed.summary.budgetInput || 0;
+          const hotelCost = totalBudget * 0.25;
+          const transportCost = totalBudget * 0.10;
+          let activityCost = 0;
+          let foodCost = 0;
+          
+          parsed.itinerary.forEach(d => {
+             d.activities.forEach(a => {
+                if (a.isMealBreak) foodCost += (a.estimatedCost || 0);
+                else activityCost += (a.estimatedCost || 0);
+             });
+          });
+          
+          await Budget.create({
+            trip_id: trip.id,
+            hotel_cost: hotelCost,
+            transport_cost: transportCost,
+            food_cost: foodCost,
+            activity_cost: activityCost,
+            miscellaneous_cost: 0,
+          }, { transaction });
+        }
+      }
+    } else {
+       await Budget.create({ trip_id: trip.id }, { transaction });
+    }
+
+    await transaction.commit();
     res.status(201).json({ success: true, trip });
-  } catch (error) { next(error); }
+  } catch (error) { 
+    await transaction.rollback();
+    next(error); 
+  }
 };
 
 const updateTrip = async (req, res, next) => {

@@ -87,5 +87,10 @@ export const plannerAPI = {
   generate: (data) => api.post('/planner/generate', data),
 };
 
+// Hidden Gems
+export const hiddenGemsAPI = {
+  getForTrip: (tripId) => api.get(`/hidden-gems/${tripId}`),
+};
+
 export default api;
 

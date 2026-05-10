@@ -17,6 +17,8 @@ import ActivitySearch from './pages/activities/ActivitySearch';
 import Profile from './pages/profile/Profile';
 import SharedTrip from './pages/public/SharedTrip';
 import SmartPlanner from './pages/planner/SmartPlanner';
+import HiddenGems from './pages/itinerary/HiddenGems';
+import DiscoverDestinations from './pages/activities/DiscoverDestinations';
 
 export default function App() {
   return (
@@ -51,8 +53,10 @@ export default function App() {
         <Route path="/itinerary/:id" element={<ProtectedRoute><ItineraryBuilder /></ProtectedRoute>} />
         <Route path="/budget/:id" element={<ProtectedRoute><BudgetDashboard /></ProtectedRoute>} />
         <Route path="/checklist/:id" element={<ProtectedRoute><PackingChecklist /></ProtectedRoute>} />
+        <Route path="/hidden-gems/:id" element={<ProtectedRoute><HiddenGems /></ProtectedRoute>} />
         <Route path="/notes/:id" element={<ProtectedRoute><TripNotes /></ProtectedRoute>} />
         <Route path="/activities" element={<ProtectedRoute><ActivitySearch /></ProtectedRoute>} />
+        <Route path="/discover" element={<ProtectedRoute><DiscoverDestinations /></ProtectedRoute>} />
         <Route path="/planner" element={<ProtectedRoute><SmartPlanner /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 

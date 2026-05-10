@@ -25,6 +25,7 @@ app.use('/api/trips/:tripId/notes', require('./src/routes/notes'));
 app.use('/api/activities', require('./src/routes/activities'));
 app.use('/api/places',    require('./src/routes/googlePlacesRoutes'));
 app.use('/api/planner',   require('./src/routes/plannerRoutes'));
+app.use('/api/hidden-gems', require('./src/routes/hiddenGems'));
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ status: 'OK', timestamp: new Date().toISOString() }));

@@ -233,6 +233,8 @@ export default function SmartPlanner() {
       fd.append('title', `${result.summary.destination} — ${result.summary.tripStyle}`);
       fd.append('description', `AI-generated ${result.summary.days}-day ${result.summary.mood} trip`);
       fd.append('status', 'planned');
+      fd.append('aiItinerary', JSON.stringify(result));
+      
       const trip = await tripsAPI.create(fd);
       toast.success('Trip saved to My Trips! 🗺️');
       navigate(`/itinerary/${trip.data.trip.id}`);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, DollarSign, Calendar, Edit, Wallet, CheckSquare, BookOpen, Share2, LayoutList, Timeline } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, DollarSign, Calendar, Edit, Wallet, CheckSquare, BookOpen, Share2, LayoutList, Timeline, Sparkles } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import AppLayout from '../../components/layout/AppLayout';
 import useTripStore from '../../store/tripStore';
@@ -74,7 +74,7 @@ export default function TripDetail() {
         <div className="grid grid-cols-3 gap-3">
           {[
             { label: 'Budget', icon: Wallet, to: `/budget/${id}`, color: 'text-purple-600 bg-purple-100' },
-            { label: 'Checklist', icon: CheckSquare, to: `/checklist/${id}`, color: 'text-green-600 bg-green-100' },
+            { label: 'Hidden Gems', icon: Sparkles, to: `/hidden-gems/${id}`, color: 'text-blue-600 bg-blue-100' },
             { label: 'Notes', icon: BookOpen, to: `/notes/${id}`, color: 'text-orange-600 bg-orange-100' },
           ].map(({ label, icon: Icon, to, color }) => (
             <Link key={label} to={to} className="card p-4 flex flex-col items-center gap-2 text-center hover:shadow-soft hover:-translate-y-0.5 transition-all duration-200">

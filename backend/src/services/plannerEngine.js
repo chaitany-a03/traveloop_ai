@@ -310,7 +310,10 @@ function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplie
 
     // Safety Rule: Max 1 enrichment activity per day. Only if budget allows.
     let currentTotal = dayAttractions.reduce((s, a) => s + (a.estimatedCost || 0), 0);
-    if (currentTotal < dailyTarget * 0.75) {
+    const realAttractionsCount = dayAttractions.filter(a => !a.isMealBreak && !a.isEnrichment).length;
+    
+    // Strict Fallback Control: Only inject if we are desperate for places or completely relying on fallback.
+    if (currentTotal < dailyTarget * 0.75 && realAttractionsCount < 3) {
       dayAttractions.push(buildExperience(d, mood, budgetTier, costMultiplier, dailyTarget - currentTotal, destination));
     }
 
@@ -359,13 +362,13 @@ function buildMealBreak(day, mood, budgetTier, costMultiplier) {
 function buildExperience(day, mood, budgetTier, costMultiplier, budgetGap, destination) {
   const isPremium = budgetTier === 'premium';
   const labels = {
-    Adventure: isPremium ? `VIP Guided ${destination} Adventure Tour` : `Local ${destination} Nature Walk`,
-    Relaxation: isPremium ? `Luxury Spa & Wellness in ${destination}` : `Relaxing ${destination} Beach Lounge`,
-    Culture: isPremium ? `Private Heritage Tour of ${destination}` : `Artisan Workshop Visit in ${destination}`,
-    Food: isPremium ? `Premium Rooftop Dining in ${destination}` : `${destination} Hidden Gem Street Food Tour`,
-    Nature: isPremium ? `Private Scenic Cruise around ${destination}` : `${destination} Sunset Picnic`,
-    Nightlife: isPremium ? `VIP Club Access & Drinks in ${destination}` : `Local ${destination} Pub Crawl`,
-    Family: isPremium ? `Private Family Experience in ${destination}` : `Local ${destination} Park Picnic`,
+    Adventure: isPremium ? `VIP Guided Adventure Tour` : `Guided Nature Walk`,
+    Relaxation: isPremium ? `Luxury Spa & Wellness` : `Relaxing Beach Lounge`,
+    Culture: isPremium ? `Private Heritage Tour` : `Artisan Workshop Visit`,
+    Food: isPremium ? `Premium Rooftop Dining` : `Hidden Gem Street Food Tour`,
+    Nature: isPremium ? `Private Scenic Cruise` : `Sunset Picnic`,
+    Nightlife: isPremium ? `VIP Club Access & Drinks` : `Local Pub Crawl`,
+    Family: isPremium ? `Private Family Experience` : `Local Park Picnic`,
     default: isPremium ? `Curated Premium Local Experience` : `Local Discovery Walk`,
   };
   
@@ -381,6 +384,7 @@ function buildExperience(day, mood, budgetTier, costMultiplier, budgetGap, desti
     photoUrl:      null,
     estimatedCost: Math.max(Math.round(400 * costMultiplier), Math.min(budgetGap, Math.round(4000 * costMultiplier))),
     openNow:       true,
+    isEnrichment:  true,
   };
 }
 
@@ -421,13 +425,38 @@ function classifyIntensity(avgActivitiesPerDay) {
 }
 
 function buildDemoAttractions(destination) {
+  const destLower = destination.toLowerCase();
+  
+  if (destLower.includes('goa')) {
+    return [
+      { name: `Baga Beach`, rating: 4.6, totalRatings: 13200, types: ['natural_feature'], address: 'Goa', priceLevel: 1 },
+      { name: `Tito's Lane`, rating: 4.4, totalRatings: 8800, types: ['night_club'], address: 'Goa', priceLevel: 2 },
+      { name: `Fort Aguada`, rating: 4.7, totalRatings: 15100, types: ['tourist_attraction'], address: 'Goa', priceLevel: 0 },
+      { name: `Curlies Beach Shack`, rating: 4.5, totalRatings: 9700, types: ['restaurant', 'bar'], address: 'Goa', priceLevel: 1 },
+      { name: `Dudhsagar Waterfalls`, rating: 4.5, totalRatings: 11400, types: ['natural_feature'], address: 'Goa', priceLevel: 0 },
+      { name: `Club Cubana`, rating: 4.8, totalRatings: 6200, types: ['night_club'], address: 'Goa', priceLevel: 3 },
+    ];
+  }
+  
+  if (destLower.includes('mumbai')) {
+    return [
+      { name: `Marine Drive`, rating: 4.8, totalRatings: 45200, types: ['natural_feature'], address: 'Mumbai', priceLevel: 0 },
+      { name: `Gateway of India`, rating: 4.7, totalRatings: 58000, types: ['tourist_attraction'], address: 'Mumbai', priceLevel: 0 },
+      { name: `Colaba Causeway`, rating: 4.5, totalRatings: 15100, types: ['shopping_mall'], address: 'Mumbai', priceLevel: 1 },
+      { name: `Juhu Beach`, rating: 4.3, totalRatings: 32700, types: ['natural_feature'], address: 'Mumbai', priceLevel: 0 },
+      { name: `Aer Lounge`, rating: 4.6, totalRatings: 3400, types: ['bar', 'night_club'], address: 'Mumbai', priceLevel: 3 },
+      { name: `Elephanta Caves`, rating: 4.6, totalRatings: 16200, types: ['tourist_attraction'], address: 'Mumbai', priceLevel: 1 },
+    ];
+  }
+
+  // Generic fallback without revealing template names
   return [
-    { name: `Historic ${destination} Fort`, rating: 4.6, totalRatings: 3200, types: ['tourist_attraction'], address: destination, priceLevel: 1 },
-    { name: `The ${destination} Grand Museum`, rating: 4.4, totalRatings: 1800, types: ['museum'], address: destination, priceLevel: 1 },
-    { name: `Central ${destination} Park`, rating: 4.7, totalRatings: 5100, types: ['park'], address: destination, priceLevel: 0 },
-    { name: `${destination} Heritage Street Food`, rating: 4.5, totalRatings: 2700, types: ['restaurant'], address: destination, priceLevel: 1 },
-    { name: `${destination} Botanical Sanctuary`, rating: 4.5, totalRatings: 1400, types: ['park'], address: destination, priceLevel: 0 },
-    { name: `Downtown ${destination} Lounge`, rating: 4.8, totalRatings: 6200, types: ['bar'], address: destination, priceLevel: 2 },
+    { name: `City Center Plaza`, rating: 4.6, totalRatings: 3200, types: ['tourist_attraction'], address: destination, priceLevel: 1 },
+    { name: `National History Museum`, rating: 4.4, totalRatings: 1800, types: ['museum'], address: destination, priceLevel: 1 },
+    { name: `Central Gardens`, rating: 4.7, totalRatings: 5100, types: ['park'], address: destination, priceLevel: 0 },
+    { name: `Local Street Food Market`, rating: 4.5, totalRatings: 2700, types: ['restaurant'], address: destination, priceLevel: 1 },
+    { name: `Grand Avenue Shopping`, rating: 4.5, totalRatings: 1400, types: ['shopping_mall'], address: destination, priceLevel: 2 },
+    { name: `Sky View Lounge`, rating: 4.8, totalRatings: 6200, types: ['bar'], address: destination, priceLevel: 2 },
   ];
 }
 
