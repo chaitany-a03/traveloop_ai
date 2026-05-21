@@ -40,24 +40,47 @@ const buildPhotoUrl = (photoReference, maxWidth = 800) => {
   return `${BASE_URL}/place/photo?maxwidth=${maxWidth}&photoreference=${photoReference}&key=${API_KEY}`;
 };
 
+// --- Caching layer ---
+const queryCache = new Map();
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutes cache
+
+const getCachedData = (key) => {
+  if (queryCache.has(key)) {
+    const cached = queryCache.get(key);
+    if (Date.now() - cached.timestamp < CACHE_TTL) {
+      return cached.data;
+    }
+    queryCache.delete(key);
+  }
+  return null;
+};
+
+const setCachedData = (key, data) => {
+  queryCache.set(key, { timestamp: Date.now(), data });
+};
+
 /**
- * Simplify a raw Google Places result into a clean object.
- * @param {object} place  - Raw place from Google API
- * @returns {object}
+ * Standardize place payloads across all Google APIs.
  */
-const simplifyPlace = (place) => ({
-  placeId:  place.place_id || null,
+const normalizePlace = (place) => ({
+  placeId:  place.place_id || place.placeId || null,
   name:     place.name || 'Unknown',
-  address:  place.formatted_address || place.vicinity || '',
-  rating:   place.rating || null,
-  totalRatings: place.user_ratings_total || 0,
+  address:  place.formatted_address || place.vicinity || place.address || '',
+  rating:   place.rating ? parseFloat(place.rating) : null,
+  totalRatings: place.user_ratings_total || place.totalRatings || 0,
   types:    place.types || [],
-  location: place.geometry?.location || null,
-  openNow:  place.opening_hours?.open_now ?? null,
-  photoUrl: place.photos?.[0]?.photo_reference
+    location: (function(){
+    const loc = place.geometry?.location || place.location || null;
+    if (!loc) return null;
+    const lat = typeof loc.lat === 'function' ? loc.lat() : loc.lat;
+    const lng = typeof loc.lng === 'function' ? loc.lng() : loc.lng;
+    return { lat, lng };
+  })(),
+  openNow:  place.opening_hours?.open_now ?? place.openNow ?? null,
+  photoUrl: place.photoUrl || (place.photos?.[0]?.photo_reference
     ? buildPhotoUrl(place.photos[0].photo_reference)
-    : null,
-  priceLevel: place.price_level ?? null,
+    : null),
+  priceLevel: place.price_level ?? place.priceLevel ?? null,
   icon:     place.icon || null,
 });
 
@@ -72,20 +95,30 @@ const simplifyPlace = (place) => ({
 const searchPlaces = async (city, category = 'tourist attractions') => {
   if (!API_KEY) throw new Error('GOOGLE_MAPS_API_KEY is not configured');
 
-  const query = `${category} in ${city}`;
+  const cacheKey = `search:${city.toLowerCase().trim()}:${category.toLowerCase().trim()}`;
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
 
-  const response = await axios.get(`${BASE_URL}/place/textsearch/json`, {
-    params: {
-      query,
-      key: API_KEY,
-    },
-  });
+  let query = category;
+  if (!category.toLowerCase().includes(city.toLowerCase().trim())) {
+    query = `${category} in ${city}`;
+  }
+
+    const response = await axios.get(`${BASE_URL}/place/textsearch/json`, {
+      params: {
+        query,
+        key: API_KEY,
+      },
+      timeout: 10000,
+    });
 
   if (response.data.status !== 'OK' && response.data.status !== 'ZERO_RESULTS') {
     throw new Error(`Google Places API error: ${response.data.status} — ${response.data.error_message || ''}`);
   }
 
-  return (response.data.results || []).map(simplifyPlace);
+  const normalized = (response.data.results || []).map(normalizePlace);
+  setCachedData(cacheKey, normalized);
+  return normalized;
 };
 
 /**
@@ -101,23 +134,30 @@ const searchPlaces = async (city, category = 'tourist attractions') => {
 const getNearbyPlaces = async (lat, lng, type = 'tourist_attraction', radius = 5000) => {
   if (!API_KEY) throw new Error('GOOGLE_MAPS_API_KEY is not configured');
 
+  const cacheKey = `nearby:${lat.toFixed(4)}:${lng.toFixed(4)}:${type}:${radius}`;
+  const cached = getCachedData(cacheKey);
+  if (cached) return cached;
+
   // Resolve friendly type alias
   const resolvedType = CATEGORY_TYPE_MAP[type.toLowerCase()] || type;
 
-  const response = await axios.get(`${BASE_URL}/place/nearbysearch/json`, {
-    params: {
-      location: `${lat},${lng}`,
-      radius,
-      type: resolvedType,
-      key: API_KEY,
-    },
-  });
+    const response = await axios.get(`${BASE_URL}/place/nearbysearch/json`, {
+      params: {
+        location: `${lat},${lng}`,
+        radius,
+        type: resolvedType,
+        key: API_KEY,
+      },
+      timeout: 10000,
+    });
 
   if (response.data.status !== 'OK' && response.data.status !== 'ZERO_RESULTS') {
     throw new Error(`Google Places API error: ${response.data.status} — ${response.data.error_message || ''}`);
   }
 
-  return (response.data.results || []).map(simplifyPlace);
+  const normalized = (response.data.results || []).map(normalizePlace);
+  setCachedData(cacheKey, normalized);
+  return normalized;
 };
 
 /**
@@ -162,13 +202,14 @@ const getPlaceDetails = async (placeId) => {
     'url',
   ].join(',');
 
-  const response = await axios.get(`${BASE_URL}/place/details/json`, {
-    params: {
-      place_id: placeId,
-      fields,
-      key: API_KEY,
-    },
-  });
+    const response = await axios.get(`${BASE_URL}/place/details/json`, {
+      params: {
+        place_id: placeId,
+        fields,
+        key: API_KEY,
+      },
+      timeout: 10000,
+    });
 
   if (response.data.status !== 'OK') {
     throw new Error(`Google Places API error: ${response.data.status} — ${response.data.error_message || ''}`);
@@ -213,4 +254,5 @@ module.exports = {
   getPlacePhoto,
   getPlaceDetails,
   buildPhotoUrl,
+  normalizePlace,
 };

@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Map, Plus, Search, User, LogOut, Plane, ChevronRight, Sparkles, Compass
+  LayoutDashboard, Map, Plus, Search, User, LogOut, Plane, ChevronRight, Sparkles, Compass, Hotel
 } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 
@@ -8,6 +8,8 @@ const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/trips', icon: Map, label: 'My Trips' },
   { to: '/activities', icon: Search, label: 'Explore Activities' },
+  { to: '/booking/travel', icon: Plane, label: 'Travel Booking' },
+  { to: '/booking/stay', icon: Hotel, label: 'Stay Booking' },
   { to: '/discover', icon: Compass, label: 'Discover Destinations' },
 ];
 
@@ -53,11 +55,10 @@ export default function Sidebar() {
           <NavLink
             key={to}
             to={to}
-            className={({ isActive }) => 
-              `relative flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 group overflow-hidden ${
-                isActive 
-                  ? 'bg-white text-gray-900 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-100' 
-                  : 'text-gray-500 hover:bg-white/50 hover:text-gray-900'
+            className={({ isActive }) =>
+              `relative flex items-center gap-4 px-4 py-3.5 rounded-2xl font-bold text-sm transition-all duration-300 group overflow-hidden ${isActive
+                ? 'bg-white text-gray-900 shadow-[0_4px_20px_rgba(0,0,0,0.04)] border border-gray-100'
+                : 'text-gray-500 hover:bg-white/50 hover:text-gray-900'
               }`
             }
           >
@@ -82,30 +83,27 @@ export default function Sidebar() {
           <NavLink
             to={AI_NAV.to}
             className={({ isActive }) =>
-              `group relative flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-black transition-all duration-500 hover:-translate-y-1 ${
-                isActive
-                  ? 'bg-gray-900 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)]'
-                  : 'bg-white text-gray-900 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-gray-100'
+              `group relative flex items-center gap-4 px-4 py-4 rounded-2xl text-sm font-black transition-all duration-500 hover:-translate-y-1 ${isActive
+                ? 'bg-gray-900 text-white shadow-[0_10px_30px_rgba(0,0,0,0.2)]'
+                : 'bg-white text-gray-900 hover:shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-gray-100'
               }`
             }
           >
             {({ isActive }) => (
               <>
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600/20 via-purple-600/20 to-accent-500/20 rounded-2xl blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10" />
-                
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-500 shadow-inner ${
-                  isActive ? 'bg-white/10' : 'bg-gradient-to-br from-primary-500 to-purple-600 group-hover:rotate-12'
-                }`}>
+
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-transform duration-500 shadow-inner ${isActive ? 'bg-white/10' : 'bg-gradient-to-br from-primary-500 to-purple-600 group-hover:rotate-12'
+                  }`}>
                   <Sparkles className={`w-5 h-5 ${isActive ? 'text-white animate-pulse' : 'text-white'}`} />
                 </div>
-                
+
                 <span className="flex-1 text-base">{AI_NAV.label}</span>
-                
-                <span className={`text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider ${
-                  isActive 
-                    ? 'bg-white/20 text-white' 
+
+                <span className={`text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider ${isActive
+                    ? 'bg-white/20 text-white'
                     : 'bg-gray-900 text-white'
-                }`}>AI</span>
+                  }`}>AI</span>
               </>
             )}
           </NavLink>

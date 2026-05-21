@@ -3,13 +3,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Brain, MapPin, Zap, Globe, Star } from 'lucide-react';
 
 const LOADING_STEPS = [
-  { icon: Globe,   text: 'Analyzing destination...',              color: 'text-blue-400' },
-  { icon: MapPin,  text: 'Finding top attractions...',            color: 'text-emerald-400' },
-  { icon: Star,    text: 'Scoring by ratings & popularity...',    color: 'text-yellow-400' },
-  { icon: Brain,   text: 'Personalizing to your mood...',         color: 'text-purple-400' },
-  { icon: Zap,     text: 'Optimizing your budget...',             color: 'text-orange-400' },
-  { icon: Sparkles,text: 'Building personalized itinerary...',    color: 'text-pink-400' },
-  { icon: Globe,   text: 'Creating unforgettable experiences...', color: 'text-cyan-400' },
+  { icon: Globe, text: 'Analyzing destination...', color: 'text-blue-400' },
+  { icon: MapPin, text: 'Finding top attractions...', color: 'text-emerald-400' },
+  { icon: Star, text: 'Scoring by ratings & popularity...', color: 'text-yellow-400' },
+  { icon: Brain, text: 'Personalizing to your mood...', color: 'text-purple-400' },
+  { icon: Zap, text: 'Optimizing your budget...', color: 'text-orange-400' },
+  { icon: Sparkles, text: 'Building personalized itinerary...', color: 'text-pink-400' },
+  { icon: Globe, text: 'Creating unforgettable experiences...', color: 'text-cyan-400' },
 ];
 
 // Orbiting dot component

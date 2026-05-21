@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Plane, Menu, X, LayoutDashboard, Map, Search, User, LogOut, Plus } from 'lucide-react';
+import { Plane, Menu, X, LayoutDashboard, Map, Search, User, LogOut, Plus, Hotel } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/trips', icon: Map, label: 'My Trips' },
   { to: '/activities', icon: Search, label: 'Explore' },
+  { to: '/booking/travel', icon: Plane, label: 'Travel Booking' },
+  { to: '/booking/stay', icon: Hotel, label: 'Stay Booking' },
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 

@@ -132,11 +132,11 @@ function StopCard({ stop, tripId, index, onDelete }) {
             {showForm
               ? <ActivityForm onAdd={handleAddActivity} onCancel={() => setShowForm(false)} />
               : <button onClick={() => setShowForm(true)} className="flex items-center gap-2 text-sm text-primary-600 hover:text-primary-700 font-semibold mt-2 group">
-                  <div className="w-6 h-6 border-2 border-dashed border-primary-300 rounded-lg flex items-center justify-center group-hover:border-primary-500 transition-colors">
-                    <Plus className="w-3.5 h-3.5" />
-                  </div>
-                  Add Activity
-                </button>
+                <div className="w-6 h-6 border-2 border-dashed border-primary-300 rounded-lg flex items-center justify-center group-hover:border-primary-500 transition-colors">
+                  <Plus className="w-3.5 h-3.5" />
+                </div>
+                Add Activity
+              </button>
             }
           </div>
         )}
@@ -281,9 +281,9 @@ export default function ItineraryBuilder() {
         {showAddStop
           ? <AddStopForm onAdd={handleAddStop} onCancel={() => setShowAddStop(false)} />
           : <button onClick={() => setShowAddStop(true)}
-              className="w-full py-4 border-2 border-dashed border-primary-200 rounded-2xl text-primary-600 font-semibold hover:border-primary-400 hover:bg-primary-50 transition-all duration-200 flex items-center justify-center gap-2">
-              <Plus className="w-5 h-5" /> Add Another Stop
-            </button>
+            className="w-full py-4 border-2 border-dashed border-primary-200 rounded-2xl text-primary-600 font-semibold hover:border-primary-400 hover:bg-primary-50 transition-all duration-200 flex items-center justify-center gap-2">
+            <Plus className="w-5 h-5" /> Add Another Stop
+          </button>
         }
       </div>
     </AppLayout>

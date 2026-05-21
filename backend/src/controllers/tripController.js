@@ -88,7 +88,19 @@ const createTrip = async (req, res, next) => {
               category: mapActivityCategory(act.types),
               cost: act.estimatedCost || 0,
               time: act.time || null,
-              notes: JSON.stringify({ rating: act.rating, isEnrichment: act.isEnrichment || false, address: act.address }),
+              notes: JSON.stringify({
+                placeId:       act.placeId || null,
+                photoUrl:      act.photoUrl || null,
+                latitude:      act.location?.lat || null,
+                longitude:     act.location?.lng || null,
+                rating:        act.rating || null,
+                reviewCount:   act.totalRatings || 0,
+                placeTypes:    act.types || [],
+                address:       act.address || '',
+                isMealBreak:   act.isMealBreak || false,
+                isEnrichment:  act.isEnrichment || false,
+                openNow:       act.openNow || false
+              }),
             }));
             await Activity.bulkCreate(activitiesToCreate, { transaction });
           }

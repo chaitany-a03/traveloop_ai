@@ -19,6 +19,7 @@ import SharedTrip from './pages/public/SharedTrip';
 import SmartPlanner from './pages/planner/SmartPlanner';
 import HiddenGems from './pages/itinerary/HiddenGems';
 import DiscoverDestinations from './pages/activities/DiscoverDestinations';
+import BookingHub from './pages/booking/BookingHub';
 
 export default function App() {
   return (
@@ -57,6 +58,8 @@ export default function App() {
         <Route path="/notes/:id" element={<ProtectedRoute><TripNotes /></ProtectedRoute>} />
         <Route path="/activities" element={<ProtectedRoute><ActivitySearch /></ProtectedRoute>} />
         <Route path="/discover" element={<ProtectedRoute><DiscoverDestinations /></ProtectedRoute>} />
+        <Route path="/booking/travel" element={<ProtectedRoute><BookingHub /></ProtectedRoute>} />
+        <Route path="/booking/stay" element={<ProtectedRoute><BookingHub /></ProtectedRoute>} />
         <Route path="/planner" element={<ProtectedRoute><SmartPlanner /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
 
