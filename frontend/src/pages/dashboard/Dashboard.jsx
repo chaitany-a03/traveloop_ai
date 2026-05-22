@@ -111,6 +111,63 @@ export default function Dashboard() {
               <path d="M0,30 C200,52 400,10 600,32 C800,54 1000,12 1200,32 C1400,54 1600,12 1800,32 C2000,54 2200,12 2400,30 L2400,90 L0,90 Z" fill="rgba(15,40,90,0.18)" />
               <path d="M0,45 C150,58 350,35 550,48 C750,60 950,36 1150,48 C1350,60 1550,36 1750,48 C1950,60 2150,36 2400,48 L2400,90 L0,90 Z" fill="rgba(200,225,255,0.12)" />
             </svg>
+
+            {/* Drifting Clouds */}
+            <motion.div
+              animate={{ x: ['-220px', 'calc(100vw + 220px)'] }}
+              transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+              className="absolute top-[8%] left-0 text-white opacity-25 pointer-events-none z-[3]"
+            >
+              <svg width="120" height="45" viewBox="0 0 100 40" fill="currentColor">
+                <path d="M20,30 Q30,15 45,22 Q55,10 70,18 Q85,15 90,30 Z" />
+              </svg>
+            </motion.div>
+            <motion.div
+              animate={{ x: ['calc(100vw + 200px)', '-200px'] }}
+              transition={{ duration: 65, repeat: Infinity, ease: 'linear' }}
+              className="absolute top-[18%] left-0 text-white opacity-20 pointer-events-none z-[3]"
+            >
+              <svg width="150" height="50" viewBox="0 0 100 40" fill="currentColor">
+                <path d="M15,32 Q25,18 40,24 Q50,12 65,20 Q78,14 88,24 Q95,18 100,30 Z" />
+              </svg>
+            </motion.div>
+            <motion.div
+              animate={{ x: ['-180px', 'calc(100vw + 180px)'] }}
+              transition={{ duration: 70, repeat: Infinity, ease: 'linear', delay: 8 }}
+              className="absolute top-[30%] left-0 text-white opacity-15 pointer-events-none z-[3]"
+            >
+              <svg width="100" height="38" viewBox="0 0 100 40" fill="currentColor">
+                <path d="M20,30 Q30,15 45,22 Q55,10 70,18 Q85,15 90,30 Z" />
+              </svg>
+            </motion.div>
+
+            {/* Gliding Planes */}
+            <motion.div
+              animate={{ 
+                x: ['-12vw', '112vw'],
+                y: ['6vh', '2vh', '8vh', '4vh'],
+                rotate: [8, 4, 10, 8]
+              }}
+              transition={{ duration: 22, repeat: Infinity, ease: 'linear' }}
+              className="absolute top-[10%] left-0 pointer-events-none z-[4] opacity-30"
+            >
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+              </svg>
+            </motion.div>
+            <motion.div
+              animate={{ 
+                x: ['115vw', '-15vw'],
+                y: ['12vh', '5vh', '10vh'],
+                rotate: [-170, -175, -168]
+              }}
+              transition={{ duration: 28, repeat: Infinity, ease: 'linear', delay: 5 }}
+              className="absolute top-[5%] left-0 pointer-events-none z-[4] opacity-20"
+            >
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>
+              </svg>
+            </motion.div>
           </div>
 
           <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-12 lg:px-16 pt-16 pb-28 flex flex-col items-center text-center">
