@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Map, Plus, Search, User, LogOut, Plane, ChevronRight, Sparkles, Compass, Hotel
+  LayoutDashboard, Map, Plus, Search, User, LogOut, Plane, ChevronRight, Sparkles, Compass, Hotel, Info
 } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 
@@ -11,6 +11,7 @@ const navItems = [
   { to: '/booking/travel', icon: Plane, label: 'Travel Booking' },
   { to: '/booking/stay', icon: Hotel, label: 'Stay Booking' },
   { to: '/discover', icon: Compass, label: 'Discover Destinations' },
+  { to: '/about', icon: Info, label: 'About Traveloop' },
 ];
 
 const AI_NAV = { to: '/planner', icon: Sparkles, label: 'AI Trip Planner', isAI: true };

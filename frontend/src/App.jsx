@@ -20,6 +20,7 @@ import SmartPlanner from './pages/planner/SmartPlanner';
 import HiddenGems from './pages/itinerary/HiddenGems';
 import DiscoverDestinations from './pages/activities/DiscoverDestinations';
 import BookingHub from './pages/booking/BookingHub';
+import About from './pages/public/About';
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/shared/:id" element={<SharedTrip />} />
+        <Route path="/about" element={<About />} />
 
         {/* Protected routes */}
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

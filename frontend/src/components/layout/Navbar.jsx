@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Plane, Menu, X, LayoutDashboard, Map, Search, User, LogOut, Plus, Hotel } from 'lucide-react';
+import { Plane, Menu, X, LayoutDashboard, Map, Search, User, LogOut, Plus, Hotel, Info } from 'lucide-react';
 import useAuthStore from '../../store/authStore';
 
 const navItems = [
@@ -9,6 +9,7 @@ const navItems = [
   { to: '/activities', icon: Search, label: 'Explore' },
   { to: '/booking/travel', icon: Plane, label: 'Travel Booking' },
   { to: '/booking/stay', icon: Hotel, label: 'Stay Booking' },
+  { to: '/about', icon: Info, label: 'About Traveloop' },
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 
