@@ -1,12 +1,12 @@
 export const generateFlightBookingLink = (destination, provider = 'skyscanner') => {
-  if (!destination) return 'https://www.skyscanner.com';
-  const cleanDest = encodeURIComponent(destination.trim());
   if (provider.toLowerCase() === 'makemytrip') {
-    return `https://www.makemytrip.com/flight/search?fromCity=Anywhere&toCity=${cleanDest}`;
+    return 'https://www.makemytrip.com/flights/';
   }
   // Default to Skyscanner
-  return `https://www.skyscanner.com/transport/flights/anywhere/${cleanDest}/`;
+  return 'https://www.skyscanner.com';
 };
+
+
 
 export const generateHotelBookingLink = (destination, provider = 'booking') => {
   if (!destination) return 'https://www.booking.com';

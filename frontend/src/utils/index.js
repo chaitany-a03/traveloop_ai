@@ -133,12 +133,12 @@ export const MOOD_COVER_IMAGES = {
 export const MOOD_CONFIG = {
   adventure: { emoji: '🧗', label: 'Adventure', gradient: 'from-orange-600 to-amber-500', bg: 'bg-orange-500', badge: 'bg-orange-500/90', textColor: 'text-orange-600' },
   relaxation: { emoji: '🧘', label: 'Relaxation', gradient: 'from-cyan-600 to-teal-400', bg: 'bg-cyan-500', badge: 'bg-cyan-500/90', textColor: 'text-cyan-600' },
-  culture:    { emoji: '🎭', label: 'Culture', gradient: 'from-amber-600 to-yellow-400', bg: 'bg-amber-500', badge: 'bg-amber-500/90', textColor: 'text-amber-600' },
-  food:       { emoji: '🍽️', label: 'Food', gradient: 'from-red-600 to-rose-400', bg: 'bg-red-500', badge: 'bg-red-500/90', textColor: 'text-red-600' },
-  nature:     { emoji: '🌿', label: 'Nature', gradient: 'from-emerald-600 to-green-400', bg: 'bg-emerald-500', badge: 'bg-emerald-500/90', textColor: 'text-emerald-600' },
-  nightlife:  { emoji: '🌃', label: 'Nightlife', gradient: 'from-purple-600 to-violet-500', bg: 'bg-purple-500', badge: 'bg-purple-500/90', textColor: 'text-purple-600' },
-  family:     { emoji: '👨‍👩‍👧', label: 'Family', gradient: 'from-pink-600 to-rose-400', bg: 'bg-pink-500', badge: 'bg-pink-500/90', textColor: 'text-pink-600' },
-  default:    { emoji: '✈️', label: 'Travel', gradient: 'from-primary-600 to-indigo-500', bg: 'bg-primary-500', badge: 'bg-primary-500/90', textColor: 'text-primary-600' },
+  culture: { emoji: '🎭', label: 'Culture', gradient: 'from-amber-600 to-yellow-400', bg: 'bg-amber-500', badge: 'bg-amber-500/90', textColor: 'text-amber-600' },
+  food: { emoji: '🍽️', label: 'Food', gradient: 'from-red-600 to-rose-400', bg: 'bg-red-500', badge: 'bg-red-500/90', textColor: 'text-red-600' },
+  nature: { emoji: '🌿', label: 'Nature', gradient: 'from-emerald-600 to-green-400', bg: 'bg-emerald-500', badge: 'bg-emerald-500/90', textColor: 'text-emerald-600' },
+  nightlife: { emoji: '🌃', label: 'Nightlife', gradient: 'from-purple-600 to-violet-500', bg: 'bg-purple-500', badge: 'bg-purple-500/90', textColor: 'text-purple-600' },
+  family: { emoji: '👨‍👩‍👧', label: 'Family', gradient: 'from-pink-600 to-rose-400', bg: 'bg-pink-500', badge: 'bg-pink-500/90', textColor: 'text-pink-600' },
+  default: { emoji: '✈️', label: 'Travel', gradient: 'from-primary-600 to-indigo-500', bg: 'bg-primary-500', badge: 'bg-primary-500/90', textColor: 'text-primary-600' },
 };
 
 // Extract the mood from a trip's title or description

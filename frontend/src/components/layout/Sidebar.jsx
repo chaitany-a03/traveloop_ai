@@ -26,7 +26,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-[280px] bg-gradient-to-b from-white/90 to-white/60 backdrop-blur-2xl border-r border-gray-100/50 min-h-screen sticky top-0 shadow-[8px_0_30px_rgba(0,0,0,0.02)] z-40">
+    <aside className="hidden lg:flex flex-col w-[280px] bg-gradient-to-b from-white/90 to-white/60 backdrop-blur-2xl border-r border-gray-100/50 h-screen sticky top-0 shadow-[8px_0_30px_rgba(0,0,0,0.02)] z-40 overflow-hidden">
       {/* Logo */}
       <div className="px-6 py-8">
         <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/dashboard')}>
@@ -51,7 +51,7 @@ export default function Sidebar() {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-4 space-y-1">
+      <nav className="flex-1 px-4 space-y-1 overflow-y-auto scrollbar-hide">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
             key={to}

@@ -179,14 +179,14 @@ function ActivityCard({ activity = {}, isLast, mood }) {
 
   if (activity?.isMealBreak) {
     return (
-      <motion.div 
-        variants={itemVariants} 
+      <motion.div
+        variants={itemVariants}
         className="flex items-center gap-3.5 py-3.5 px-4 bg-slate-50 border border-slate-200/80 rounded-2xl shadow-sm relative"
       >
         {!isLast && (
           <div className="absolute left-[32px] top-full h-4 w-0.5 bg-slate-200 z-0 pointer-events-none" />
         )}
-        
+
         <div className="w-8 h-8 bg-slate-900 rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_2px_8px_rgba(0,0,0,0.15)] z-10">
           <Utensils className="w-4 h-4 text-white" />
         </div>
@@ -280,17 +280,17 @@ function DayCard({ day = {}, index, mood }) {
   const activities = day?.activities || [];
 
   return (
-    <motion.div 
-      variants={cardVariants} 
+    <motion.div
+      variants={cardVariants}
       className="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden hover:shadow-[0_12px_35px_rgba(0,0,0,0.03)] transition-all duration-300"
     >
       {/* Day header — Gorgeous dark slate-black gradient */}
       <div className="px-6 py-5 bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 text-white flex items-center justify-between border-b border-slate-950 relative overflow-hidden">
-        <div 
-          className="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none" 
+        <div
+          className="absolute inset-0 opacity-5 mix-blend-overlay pointer-events-none"
           style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/cubes.png')" }}
         />
-        
+
         <div className="relative z-10">
           <div className="flex items-center gap-3.5">
             <div className="w-9 h-9 bg-white/10 rounded-xl flex items-center justify-center font-bold text-base shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] backdrop-blur-md border border-white/10">
@@ -332,7 +332,7 @@ function DayCard({ day = {}, index, mood }) {
 function RecommendationCard({ text, index }) {
   const icons = [Lightbulb, CheckCircle2, Target, TrendingUp, Zap, Star];
   const Icon = icons[index % icons.length];
-  
+
   return (
     <motion.div
       variants={itemVariants}
@@ -351,17 +351,17 @@ function RecommendationCard({ text, index }) {
 
 // ─── Main ItineraryResult component ───
 export default function ItineraryResult({ result, onRegenerate, onSave }) {
-  const { 
-    summary = {}, 
-    metadata = {}, 
-    itinerary = [], 
-    recommendations = [] 
+  const {
+    summary = {},
+    metadata = {},
+    itinerary = [],
+    recommendations = []
   } = result || {};
 
   const rawMood = summary?.mood || 'default';
   const mood = rawMood.toLowerCase();
   const moodCfg = MOOD_CONFIG[mood] || MOOD_CONFIG.default;
-  
+
   const destination = summary?.destination || 'Destination';
   const tripStyle = summary?.tripStyle || 'Custom Journey';
   const days = summary?.days || 0;
@@ -403,16 +403,16 @@ export default function ItineraryResult({ result, onRegenerate, onSave }) {
         {/* Top Action Bar — inside the cover overlay */}
         <div className="absolute top-0 left-0 right-0 z-20 p-5 md:p-8">
           <div className="max-w-5xl mx-auto flex items-center justify-between">
-            <button 
-              onClick={onRegenerate} 
+            <button
+              onClick={onRegenerate}
               className="px-4 py-2.5 rounded-full bg-black/35 backdrop-blur-xl text-white font-bold text-sm hover:bg-black/50 transition-all border border-white/10 flex items-center gap-2 shadow-lg"
             >
               <ArrowLeft className="w-4 h-4" /> Back to Planner
             </button>
             <div className="flex gap-2.5">
               {onSave && (
-                <button 
-                  onClick={onSave} 
+                <button
+                  onClick={onSave}
                   className="px-5 py-2.5 rounded-full bg-slate-900 text-white font-bold text-sm hover:bg-slate-800 transition-all border border-slate-950 flex items-center gap-2 shadow-lg"
                 >
                   <CheckCircle2 className="w-4 h-4" /> Save Trip

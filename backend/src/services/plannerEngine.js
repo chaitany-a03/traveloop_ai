@@ -279,25 +279,25 @@ const MOOD_QUERY_ECOSYSTEMS = {
 // ─── Per-Mood strict Google Place Type allowlists ─────────────────
 // Places with NONE of these types are soft-rejected (unless broad tourist_attraction)
 const MOOD_ALLOWED_TYPES = {
-  Nightlife:   ['bar', 'night_club', 'casino', 'cafe'],
-  Food:        ['restaurant', 'cafe', 'bakery', 'meal_takeaway', 'meal_delivery', 'food'],
-  Culture:     ['museum', 'art_gallery', 'tourist_attraction', 'church', 'hindu_temple', 'mosque', 'place_of_worship', 'synagogue'],
-  Nature:      ['natural_feature', 'park', 'zoo', 'campground', 'aquarium'],
-  Adventure:   ['natural_feature', 'park', 'tourist_attraction', 'amusement_park', 'stadium'],
-  Family:      ['amusement_park', 'zoo', 'aquarium', 'park', 'museum', 'tourist_attraction'],
-  Relaxation:  ['spa', 'park', 'cafe', 'natural_feature', 'restaurant'],
+  Nightlife: ['bar', 'night_club', 'casino', 'cafe'],
+  Food: ['restaurant', 'cafe', 'bakery', 'meal_takeaway', 'meal_delivery', 'food'],
+  Culture: ['museum', 'art_gallery', 'tourist_attraction', 'church', 'hindu_temple', 'mosque', 'place_of_worship', 'synagogue'],
+  Nature: ['natural_feature', 'park', 'zoo', 'campground', 'aquarium'],
+  Adventure: ['natural_feature', 'park', 'tourist_attraction', 'amusement_park', 'stadium'],
+  Family: ['amusement_park', 'zoo', 'aquarium', 'park', 'museum', 'tourist_attraction'],
+  Relaxation: ['spa', 'park', 'cafe', 'natural_feature', 'restaurant'],
 };
 
 // ─── Per-Mood Nearby Search type ─────────────────────────────────
 const MOOD_NEARBY_TYPE = {
-  Nightlife:   'bar',
-  Food:        'restaurant',
-  Nature:      'park',
-  Culture:     'museum',
-  Adventure:   'tourist_attraction',
-  Family:      'amusement_park',
-  Relaxation:  'spa',
-  default:     'tourist_attraction',
+  Nightlife: 'bar',
+  Food: 'restaurant',
+  Nature: 'park',
+  Culture: 'museum',
+  Adventure: 'tourist_attraction',
+  Family: 'amusement_park',
+  Relaxation: 'spa',
+  default: 'tourist_attraction',
 };
 
 function getQueryList(destination, mood) {
@@ -350,31 +350,31 @@ function getQueryList(destination, mood) {
 
 const TYPE_BASE_COST = {
   tourist_attraction: 300,
-  museum:             250,
-  art_gallery:        200,
-  amusement_park:    1200,
-  zoo:                400,
-  aquarium:           500,
-  restaurant:         600,
-  cafe:               200,
-  bar:                400,
-  night_club:         800,
-  spa:               1500,
-  park:               100,
-  natural_feature:    150,
-  stadium:            500,
-  casino:            1000,
-  shopping_mall:      800,
-  movie_theater:      300,
-  default:            250,
+  museum: 250,
+  art_gallery: 200,
+  amusement_park: 1200,
+  zoo: 400,
+  aquarium: 500,
+  restaurant: 600,
+  cafe: 200,
+  bar: 400,
+  night_club: 800,
+  spa: 1500,
+  park: 100,
+  natural_feature: 150,
+  stadium: 500,
+  casino: 1000,
+  shopping_mall: 800,
+  movie_theater: 300,
+  default: 250,
 };
 
 // ─── Helpers ───────────────────────────────────────────────────────
 
 function getBudgetTier(totalBudget, days) {
   const daily = totalBudget / days;
-  if (daily < 2000)  return 'budget';
-  if (daily < 6000)  return 'mid';
+  if (daily < 2000) return 'budget';
+  if (daily < 6000) return 'mid';
   return 'premium';
 }
 
@@ -403,11 +403,11 @@ function getPlaceCategory(types = []) {
 function getPreferredTimeSlots(category) {
   switch (category) {
     case 'nightlife': return ['Evening'];
-    case 'nature':    return ['Morning', 'Late Morning', 'Late Afternoon'];
-    case 'food':      return ['Late Morning', 'Afternoon', 'Evening'];
-    case 'culture':   return ['Morning', 'Late Morning', 'Afternoon'];
-    case 'family':    return ['Morning', 'Late Morning', 'Afternoon'];
-    default:          return ['Morning', 'Late Morning', 'Afternoon', 'Late Afternoon'];
+    case 'nature': return ['Morning', 'Late Morning', 'Late Afternoon'];
+    case 'food': return ['Late Morning', 'Afternoon', 'Evening'];
+    case 'culture': return ['Morning', 'Late Morning', 'Afternoon'];
+    case 'family': return ['Morning', 'Late Morning', 'Afternoon'];
+    default: return ['Morning', 'Late Morning', 'Afternoon', 'Late Afternoon'];
   }
 }
 
@@ -415,7 +415,7 @@ function getPreferredTimeSlots(category) {
 
 function scoreAttraction(place, mood, budgetTier, travelType) {
   let score = 0;
-  
+
   // Rating Quality & Popularity
   score += (place.rating || 3.5) * 10;
   if (place.totalRatings > 0) {
@@ -423,18 +423,18 @@ function scoreAttraction(place, mood, budgetTier, travelType) {
   }
 
   const category = getPlaceCategory(place.types);
-  
+
   // Mood Relevance
   const moodMap = { Nightlife: 'nightlife', Culture: 'culture', Food: 'food', Nature: 'nature', Family: 'family' };
   if (category === moodMap[mood]) score += 15;
-  
+
   // Travel Type Compatibility
   if (travelType === 'Family' && category === 'nightlife') score -= 20;
   if (travelType === 'Couple' && category === 'family') score -= 10;
-  
+
   // Budget Compatibility
   if (budgetTier === 'budget' && (place.priceLevel || 0) >= 3) score -= 20;
-  if (budgetTier === 'mid'    && (place.priceLevel || 0) >= 4) score -= 10;
+  if (budgetTier === 'mid' && (place.priceLevel || 0) >= 4) score -= 10;
 
   // Google Place Type Boosting & Penalization
   if (Array.isArray(place.types)) {
@@ -460,9 +460,9 @@ function scoreAttraction(place, mood, budgetTier, travelType) {
 }
 
 const EXCLUDED_TYPES = new Set([
-  'hospital', 'bank', 'atm', 'pharmacy', 'dentist', 'doctor', 'physiotherapist', 
-  'lawyer', 'accounting', 'post_office', 'police', 'embassy', 'cemetery', 
-  'funeral_home', 'school', 'university', 'transit_station', 'bus_station', 
+  'hospital', 'bank', 'atm', 'pharmacy', 'dentist', 'doctor', 'physiotherapist',
+  'lawyer', 'accounting', 'post_office', 'police', 'embassy', 'cemetery',
+  'funeral_home', 'school', 'university', 'transit_station', 'bus_station',
   'subway_station', 'train_station', 'light_rail_station', 'airport', 'local_government_office',
   'gas_station', 'car_repair', 'car_dealer', 'car_rental', 'parking', 'storage', 'real_estate_agency',
   'travel_agency', 'lodging'
@@ -504,7 +504,7 @@ function isPlaceValid(p, mood) {
   if (rating !== null) {
     const category = getPlaceCategory(p.types);
     let minRating = 4.0;
-    
+
     // Food/Nightlife rating: >= 4.2
     if (category === 'food' || category === 'nightlife') {
       minRating = 4.2;
@@ -528,15 +528,15 @@ function normalizeName(name) {
 }
 
 function deduplicate(places) {
-  const seenIds   = new Set();
+  const seenIds = new Set();
   const seenNames = new Set();
-  const result    = [];
+  const result = [];
   for (const p of places) {
     if (!p.name || p.name === 'Unknown') continue;
     const normName = normalizeName(p.name);
     if (p.placeId && seenIds.has(p.placeId)) continue;
     if (seenNames.has(normName)) continue;
-    
+
     if (p.placeId) seenIds.add(p.placeId);
     seenNames.add(normName);
     result.push(p);
@@ -553,10 +553,10 @@ function haversineDist(loc1, loc2) {
   const R = 6371; // km
   const dLat = toRad(loc2.lat - loc1.lat);
   const dLon = toRad(loc2.lng - loc1.lng);
-  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(toRad(loc1.lat)) * Math.cos(toRad(loc2.lat)) *
-            Math.sin(dLon/2) * Math.sin(dLon/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRad(loc1.lat)) * Math.cos(toRad(loc2.lat)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
 
@@ -564,11 +564,11 @@ function haversineDist(loc1, loc2) {
  * Lightweight proximity-based grouping.
  */
 function groupPlacesByProximity(places, numDays) {
-  if (places.length === 0) return Array.from({length: numDays}, () => []);
-  
+  if (places.length === 0) return Array.from({ length: numDays }, () => []);
+
   const validPlaces = places.filter(p => p.location && p.location.lat);
-  const groups = Array.from({length: numDays}, () => []);
-  
+  const groups = Array.from({ length: numDays }, () => []);
+
   if (validPlaces.length === 0) {
     places.forEach((p, i) => groups[i % numDays].push(p));
     return groups;
@@ -606,7 +606,7 @@ function groupPlacesByProximity(places, numDays) {
     }
     groups[closestIdx].push(p);
   }
-  
+
   return groups;
 }
 
@@ -714,10 +714,10 @@ function actionsPerDay(days, budgetTier) {
  * Assign activities ensuring a humanized flow and preventing repetitive types.
  */
 function scheduleHumanizedDay(pool, perDay, costMultiplier, destination) {
-  pool.sort((a,b) => b._score - a._score);
+  pool.sort((a, b) => b._score - a._score);
   const dayAttractions = [];
   const usedCategories = new Set();
-  
+
   const destKey = destination.toLowerCase().trim();
   const profileKey = Object.keys(CITY_PROFILES).find(k => destKey.includes(k));
   let themeCategories = [];
@@ -728,59 +728,59 @@ function scheduleHumanizedDay(pool, perDay, costMultiplier, destination) {
   for (let s = 0; s < TIME_SLOTS.length; s++) {
     const slot = TIME_SLOTS[s];
     if (dayAttractions.length >= perDay) break;
-    
+
     let bestIdx = -1;
     for (let i = 0; i < pool.length; i++) {
       const p = pool[i];
       if (p._used) continue;
-      
+
       const cat = getPlaceCategory(p.types);
       const prefSlots = getPreferredTimeSlots(cat);
-      
+
       // Strict exclusions
       if (slot === 'Morning' && cat === 'nightlife') continue;
       if (slot === 'Late Morning' && cat === 'nightlife') continue;
-      
+
       // Try to avoid repetitive categories unless theme-appropriate or desperate
-      const isThemeAppropriate = themeCategories.includes(cat) || 
-        (cat === 'food' && themeCategories.includes('cafes')) || 
-        (cat === 'nightlife' && themeCategories.includes('nightlife')) || 
-        (cat === 'culture' && themeCategories.includes('heritage')) || 
+      const isThemeAppropriate = themeCategories.includes(cat) ||
+        (cat === 'food' && themeCategories.includes('cafes')) ||
+        (cat === 'nightlife' && themeCategories.includes('nightlife')) ||
+        (cat === 'culture' && themeCategories.includes('heritage')) ||
         (cat === 'nature' && themeCategories.includes('mountains'));
 
       if (usedCategories.has(cat) && !isThemeAppropriate && pool.filter(x => !x._used).length > 2) {
-        continue; 
+        continue;
       }
-      
+
       // Preference matching
       if (prefSlots.includes(slot) || bestIdx === -1) {
         bestIdx = i;
         if (prefSlots.includes(slot)) break; // Perfect match
       }
     }
-    
+
     if (bestIdx !== -1) {
       pool[bestIdx]._used = true;
       const p = pool[bestIdx];
       usedCategories.add(getPlaceCategory(p.types));
-      
+
       const baseCost = resolveBaseCost(p.types);
       dayAttractions.push({
-        name:          p.name,
-        placeId:       p.placeId || null,
-        address:       p.address || '',
-        time:          slot,
-        rating:        p.rating || null,
-        totalRatings:  p.totalRatings || 0,
-        types:         p.types || [],
-        location:      p.location || null,
-        photoUrl:      p.photoUrl || null,
+        name: p.name,
+        placeId: p.placeId || null,
+        address: p.address || '',
+        time: slot,
+        rating: p.rating || null,
+        totalRatings: p.totalRatings || 0,
+        types: p.types || [],
+        location: p.location || null,
+        photoUrl: p.photoUrl || null,
         estimatedCost: Math.round(baseCost * costMultiplier),
-        openNow:       p.openNow,
+        openNow: p.openNow,
       });
     }
   }
-  
+
   // Sort chronologically
   dayAttractions.sort((a, b) => TIME_SLOTS.indexOf(a.time) - TIME_SLOTS.indexOf(b.time));
   return dayAttractions;
@@ -788,7 +788,7 @@ function scheduleHumanizedDay(pool, perDay, costMultiplier, destination) {
 
 function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplier, dailyTarget, destination) {
   const perDay = Math.min(MAX_PER_DAY, Math.max(MIN_PER_DAY, actionsPerDay(days, budgetTier)));
-  
+
   // Group geographically
   const clusters = groupPlacesByProximity(attractions, days);
   const dayPlans = [];
@@ -796,7 +796,7 @@ function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplie
   for (let d = 1; d <= days; d++) {
     const clusterPool = clusters[d - 1] || [];
     const dayAttractions = scheduleHumanizedDay(clusterPool, perDay, costMultiplier, destination);
-    
+
     // Inject a meal break hint for days with >= 2 activities
     if (dayAttractions.length >= 2) {
       dayAttractions.splice(
@@ -808,7 +808,7 @@ function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplie
     // Safety Rule: Max 1 enrichment activity per day. Only if budget allows or real activities are sparse.
     let currentTotal = dayAttractions.reduce((s, a) => s + (a.estimatedCost || 0), 0);
     const realAttractionsCount = dayAttractions.filter(a => !a.isMealBreak && !a.isEnrichment).length;
-    
+
     // Prioritize adding another real attraction from the pool if available, otherwise build local experience
     if (realAttractionsCount < 2) {
       const unusedReal = clusterPool.find(p => !p._used);
@@ -816,17 +816,17 @@ function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplie
         unusedReal._used = true;
         const baseCost = resolveBaseCost(unusedReal.types);
         dayAttractions.push({
-          name:          unusedReal.name,
-          placeId:       unusedReal.placeId || null,
-          address:       unusedReal.address || '',
-          time:          'Evening',
-          rating:        unusedReal.rating || null,
-          totalRatings:  unusedReal.totalRatings || 0,
-          types:         unusedReal.types || [],
-          location:      unusedReal.location || null,
-          photoUrl:      unusedReal.photoUrl || null,
+          name: unusedReal.name,
+          placeId: unusedReal.placeId || null,
+          address: unusedReal.address || '',
+          time: 'Evening',
+          rating: unusedReal.rating || null,
+          totalRatings: unusedReal.totalRatings || 0,
+          types: unusedReal.types || [],
+          location: unusedReal.location || null,
+          photoUrl: unusedReal.photoUrl || null,
           estimatedCost: Math.round(baseCost * costMultiplier),
-          openNow:       unusedReal.openNow,
+          openNow: unusedReal.openNow,
         });
       } else {
         dayAttractions.push(buildExperience(d, mood, budgetTier, costMultiplier, dailyTarget - currentTotal, destination));
@@ -841,9 +841,9 @@ function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplie
     const theme = getRegionLabel(dayAttractions.filter(a => !a.isMealBreak && !a.isEnrichment), destination, mood);
 
     dayPlans.push({
-      day:            d,
+      day: d,
       theme,
-      activities:     dayAttractions,
+      activities: dayAttractions,
       dayTotal,
     });
   }
@@ -852,8 +852,8 @@ function distributeAcrossDays(attractions, days, mood, budgetTier, costMultiplie
 }
 
 function buildMealBreak(day, mood, budgetTier, costMultiplier, pool, destination) {
-  const mealCosts  = { budget: 150, mid: 400, premium: 900 };
-  const baseMeal   = mealCosts[budgetTier] || 400;
+  const mealCosts = { budget: 150, mid: 400, premium: 900 };
+  const baseMeal = mealCosts[budgetTier] || 400;
 
   // Try to find a real unused restaurant/cafe/bar in the day's cluster pool
   if (pool && pool.length > 0) {
@@ -862,18 +862,18 @@ function buildMealBreak(day, mood, budgetTier, costMultiplier, pool, destination
       realFoodPlace._used = true;
       const baseCost = resolveBaseCost(realFoodPlace.types);
       return {
-        name:          realFoodPlace.name,
-        placeId:       realFoodPlace.placeId || null,
-        address:       realFoodPlace.address || '',
-        time:          'Midday',
-        rating:        realFoodPlace.rating || null,
-        totalRatings:  realFoodPlace.totalRatings || 0,
-        types:         realFoodPlace.types || [],
-        location:      realFoodPlace.location || null,
-        photoUrl:      realFoodPlace.photoUrl || null,
+        name: realFoodPlace.name,
+        placeId: realFoodPlace.placeId || null,
+        address: realFoodPlace.address || '',
+        time: 'Midday',
+        rating: realFoodPlace.rating || null,
+        totalRatings: realFoodPlace.totalRatings || 0,
+        types: realFoodPlace.types || [],
+        location: realFoodPlace.location || null,
+        photoUrl: realFoodPlace.photoUrl || null,
         estimatedCost: Math.round(baseCost * costMultiplier),
-        openNow:       realFoodPlace.openNow,
-        isMealBreak:   true,
+        openNow: realFoodPlace.openNow,
+        isMealBreak: true,
       };
     }
   }
@@ -900,17 +900,17 @@ function buildMealBreak(day, mood, budgetTier, costMultiplier, pool, destination
   }
 
   return {
-    name:          fallbackName,
-    placeId:       null,
-    address:       '',
-    time:          'Midday',
-    rating:        4.5,
-    totalRatings:  100,
-    types:         ['restaurant', 'food', 'meal_break'],
-    location:      null,
-    photoUrl:      null,
+    name: fallbackName,
+    placeId: null,
+    address: '',
+    time: 'Midday',
+    rating: 4.5,
+    totalRatings: 100,
+    types: ['restaurant', 'food', 'meal_break'],
+    location: null,
+    photoUrl: null,
     estimatedCost: Math.round(baseMeal * costMultiplier),
-    isMealBreak:   true,
+    isMealBreak: true,
   };
 }
 
@@ -1040,18 +1040,18 @@ function buildExperience(day, mood, budgetTier, costMultiplier, budgetGap, desti
   }
 
   return {
-    name:          expName,
-    placeId:       null,
-    address:       '',
-    time:          'Evening',
-    rating:        4.8,
-    totalRatings:  150,
-    types:         ['tourist_attraction'],
-    location:      null,
-    photoUrl:      null,
+    name: expName,
+    placeId: null,
+    address: '',
+    time: 'Evening',
+    rating: 4.8,
+    totalRatings: 150,
+    types: ['tourist_attraction'],
+    location: null,
+    photoUrl: null,
     estimatedCost: Math.max(Math.round(400 * costMultiplier), Math.min(budgetGap, Math.round(4000 * costMultiplier))),
-    openNow:       true,
-    isEnrichment:  true,
+    openNow: true,
+    isEnrichment: true,
   };
 }
 
@@ -1093,7 +1093,7 @@ function classifyIntensity(avgActivitiesPerDay) {
 
 function buildDemoAttractions(destination, mood) {
   const destLower = destination.toLowerCase();
-  
+
   if (destLower.includes('mumbai')) {
     if (mood === 'Nightlife') {
       return [
@@ -1213,7 +1213,7 @@ function buildDemoAttractions(destination, mood) {
 
   // Generic fallback with purely generic category experiences to avoid synthetic/fake landmark names
   const cap = destination.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-  
+
   if (mood === 'Nightlife') {
     return [
       { name: `Rooftop Lounge Experience`, rating: 4.6, totalRatings: 1200, types: ['bar', 'night_club'], address: `${cap}`, priceLevel: 3 },
@@ -1228,7 +1228,7 @@ function buildDemoAttractions(destination, mood) {
       { name: `Historical Monument Visit`, rating: 4.7, totalRatings: 4000, types: ['tourist_attraction', 'historical_landmark'], address: `${cap}`, priceLevel: 0 },
     ];
   }
-  
+
   return [
     { name: `Guided Heritage Walk`, rating: 4.6, totalRatings: 3200, types: ['tourist_attraction', 'culture'], address: `${cap}`, priceLevel: 0 },
     { name: `Local Street Food Experience`, rating: 4.5, totalRatings: 1800, types: ['restaurant', 'food'], address: `${cap}`, priceLevel: 1 },
@@ -1300,7 +1300,7 @@ async function generateSmartItinerary({ destination, days, budget, mood, travelT
     rawPlaces = combined;
     console.log(`[PlannerEngine] Total raw places before dedup: ${rawPlaces.length}`);
   } else {
-    rawPlaces  = buildDemoAttractions(destination, mood);
+    rawPlaces = buildDemoAttractions(destination, mood);
     dataSource = 'demo_data';
     console.log(`[PlannerEngine] No API key — using demo data (${rawPlaces.length} places)`);
   }
@@ -1328,7 +1328,7 @@ async function generateSmartItinerary({ destination, days, budget, mood, travelT
     console.log(`[PlannerEngine] After relaxed filter: ${filtered.length} places`);
   }
 
-  const budgetTier    = getBudgetTier(budget, days);
+  const budgetTier = getBudgetTier(budget, days);
   const costMultiplier = BUDGET_MULTIPLIER[budgetTier];
   const targetRate = TARGET_UTILIZATION[budgetTier];
   const assumedFixedCosts = (budget * 0.25) + (budget * 0.10);
@@ -1342,7 +1342,7 @@ async function generateSmartItinerary({ destination, days, budget, mood, travelT
 
   const estimatedItineraryCost = dayPlans.reduce((s, d) => s + d.dayTotal, 0);
   const estimatedBudget = Math.round(estimatedItineraryCost + assumedFixedCosts);
-  const avgDailySpend   = Math.round(estimatedBudget / days);
+  const avgDailySpend = Math.round(estimatedBudget / days);
 
   const totalAttractions = dayPlans.reduce((s, d) => s + d.activities.filter(a => !a.isMealBreak).length, 0);
   const intensity = classifyIntensity(totalAttractions / days);
